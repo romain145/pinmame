@@ -1,0 +1,14 @@
+{
+    "files.associations": {
+        "driver.h": "c",
+        "state.h": "c",
+        "mamedbg.h": "c",
+        "mame.h": "c",
+        "core.h": "c",
+        "gen.h": "c",
+        "sim.h": "c",
+        "osdepend.h": "c",
+        "timer.h": "c",
+        "profiler.h": "c"
+    }
+}

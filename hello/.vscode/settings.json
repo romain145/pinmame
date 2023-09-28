@@ -1,0 +1,14 @@
+{
+    "files.associations": {
+        "m6809.h": "c",
+        "osd_cpu.h": "c",
+        "memory.h": "c",
+        "cpuexec.h": "c",
+        "atomic": "c",
+        "cstring": "c",
+        "vector": "c",
+        "xmemory": "c",
+        "xstring": "c",
+        "xutility": "c"
+    }
+}
