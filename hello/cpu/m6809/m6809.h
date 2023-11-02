@@ -10,8 +10,10 @@
 #define INLINE static inline
 #endif
 
-#include "memory.h"
+//#include "memory.h"
 #include "../../osd_cpu.h"
+
+#define cpu_readop(pc) 0
 
 enum {
 	M6809_PC=1, M6809_S, M6809_CC ,M6809_A, M6809_B, M6809_U, M6809_X, M6809_Y,
@@ -42,26 +44,26 @@ extern unsigned m6809_dasm(char *buffer, unsigned pc);
 /* Read a byte from given memory location                                   */
 /****************************************************************************/
 /* ASG 971005 -- changed to cpu_readmem16/cpu_writemem16 */
-#define M6809_RDMEM(Addr) ((unsigned)cpu_readmem16(Addr))
+#define M6809_RDMEM(Addr) 0 //((unsigned)cpu_readmem16(Addr))
 
 /****************************************************************************/
 /* Write a byte to given memory location                                    */
 /****************************************************************************/
-#define M6809_WRMEM(Addr,Value) (cpu_writemem16(Addr,Value))
+#define M6809_WRMEM(Addr,Value) //(cpu_writemem16(Addr,Value))
 
 /****************************************************************************/
 /* Z80_RDOP() is identical to Z80_RDMEM() except it is used for reading     */
 /* opcodes. In case of system with memory mapped I/O, this function can be  */
 /* used to greatly speed up emulation                                       */
 /****************************************************************************/
-#define M6809_RDOP(Addr) ((unsigned)cpu_readop(Addr))
+#define M6809_RDOP(Addr) 0 //((unsigned)cpu_readop(Addr))
 
 /****************************************************************************/
 /* Z80_RDOP_ARG() is identical to Z80_RDOP() except it is used for reading  */
 /* opcode arguments. This difference can be used to support systems that    */
 /* use different encoding mechanisms for opcodes and opcode arguments       */
 /****************************************************************************/
-#define M6809_RDOP_ARG(Addr) ((unsigned)cpu_readop_arg(Addr))
+#define M6809_RDOP_ARG(Addr) 0 //((unsigned)cpu_readop_arg(Addr))
 
 #ifndef FALSE
 #    define FALSE 0

@@ -169,7 +169,8 @@ static PAIR ea;         /* effective address */
 #define EA	ea.w.l
 #define EAD ea.d
 
-#define CHANGE_PC change_pc16(PCD)
+#define CHANGE_PC
+//#define CHANGE_PC change_pc16(PCD)
 #if 0
 #define CHANGE_PC	{			\
 	if( m6809_slapstic )		\
@@ -514,7 +515,7 @@ void m6809_set_reg(int regnum, unsigned val)
 /****************************************************************************/
 void m6809_init(void)
 {
-	int cpu = cpu_getactivecpu();
+	int cpu = 0;//cpu_getactivecpu();
 /*
 	state_save_register_UINT16("m6809", cpu, "PC", &PC, 1);
 	state_save_register_UINT16("m6809", cpu, "U", &U, 1);
