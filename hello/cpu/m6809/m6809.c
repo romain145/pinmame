@@ -692,8 +692,6 @@ int m6809_execute(int cycles)	/* NS 970908 */
 		{
 			pPPC = pPC;
 
-			//CALL_MAME_DEBUG;
-
 			m6809.ireg = ROP(PCD);
 			PC++;
 #if BIG_SWITCH

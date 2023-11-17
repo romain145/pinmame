@@ -10,7 +10,7 @@
       "stopAtEntry": false,
       "environment": [{ "name": "config", "value": "Debug" }],
       "cwd": "${workspaceFolder}",
-      
+      "miDebuggerPath": "C:\\msys64\\ucrt64\\bin\\gdb.exe",
       "preLaunchTask": "Build",
     },
   ],
