@@ -20,7 +20,9 @@ uint8_t asic_rom_bank;
 
 // ASIC registers
 typedef enum {
+  ASIC_SND_BACK = 0x3FDD,
   ASIC_REG_LED = 0x3FF2,
+  ASIC_REG_FIRQ = 0x3FF8,
   ASIC_REG_ROM_BANK = 0x3FFC,
   ASIC_REG_RAM_LOCK = 0x3FFD,
   ASIC_REG_RAM_LOCKSIZE = 0x3FFE,
@@ -91,23 +93,39 @@ void memory_init() {
 uint8_t mmu_read(uint16_t addr) {
   if(addr < 0x2000) {
     // Read from RAM
-    printf("Read from RAM: %04X\n", addr);
-    return ram[addr];
+    uint8_t value = ram[addr];
+    //printf("Read from RAM: %04X %02X\n", addr, value);
+    return value;
   } else if(addr < 0x4000) {
     // Read from the hardware
     printf("Read from hardware: %04X\n", addr);
-    return 0xFF;
+    switch(addr)
+    {
+      case ASIC_SND_BACK:
+        //printf("ASIC_SND_BACK %02X\n", value);
+        break;
+      case ASIC_REG_FIRQ:
+        printf("ASIC_REG_FIRQ\n");
+        return 0x00;
+        break;
+      default:
+        //printf("Unknown ASIC register: %04X\n", addr);
+        return 0x00;
+        break;
+    }
   } else if(addr < 0x8000) {
     // Read from the switchable ROM bank
-    printf("Read from ROM bank %02X: %04X\n", asic_rom_bank, addr);
     uint16_t offset = 0x4000;
-    return rom_banks[asic_rom_bank][addr - offset];
+    uint8_t value = rom_banks[asic_rom_bank][addr-offset];
+    //printf("Read from ROM bank %02X: %04X %02X\n", asic_rom_bank, addr-offset, value);
+    return value;
   } else {
     // Read from ROM
-    //printf("Read from ROM: %04X\n", addr);
     uint16_t offset = 0x8000;
     // System ROM is always in bank 0x3E
-    return rom_banks[0x3E][addr-offset];
+    uint8_t value = rom_banks[0x3E][addr-offset];
+    //printf("Read from ROM: %04X %02X\n", addr, value);
+    return value;
   }
 }
 
@@ -115,19 +133,35 @@ void mmu_write(uint16_t addr, uint8_t value) {
     static int cpt=0;
   if(addr < 0x2000) {
     // Write to RAM
-    printf("Write to RAM: %04X\n", addr);
+    //printf("Write to RAM: %04X %02X\n", addr, value);
     ram[addr] = value;
   } else if(addr < 0x4000) {
     // Write to the hardware
-    printf("Write to hardware: %04X = %02X cpt=%d\n", addr, value, cpt++);
-    if(addr == ASIC_REG_ROM_BANK) {
-      asic_rom_bank = value;
-    }
-    if(addr == ASIC_REG_LED && value == 0x00) {
-      printf("LED OFF\n");
-    }
-    if(addr == ASIC_REG_LED && value == 0x01) {
-      printf("LED ON\n");
+    //printf("Write to hardware: %04X = %02X cpt=%d\n", addr, value, cpt++);
+    switch(addr)
+    {
+      case ASIC_SND_BACK:
+        //printf("ASIC_SND_BACK %02X\n", value);
+        break;
+      case ASIC_REG_LED:
+        printf("ASIC_REG_LED %02X\n", value);
+        break;
+      case ASIC_REG_ROM_BANK:
+        //printf("ASIC_REG_ROM_BANK %02X\n", value);
+        asic_rom_bank = value;
+        break;
+      case ASIC_REG_RAM_LOCK:
+        printf("ASIC_REG_RAM_LOCK %02X\n", value);
+        break;
+      case ASIC_REG_RAM_LOCKSIZE:
+        printf("ASIC_REG_RAM_LOCKSIZE %02X\n", value);
+        break;
+      case ASIC_REG_IRQ:
+        //printf("ASIC_REG_IRQ\n");
+        break;
+      default:
+        //printf("Unknown ASIC register: %04X\n", addr);
+        break;
     }
 
   } else if(addr < 0x8000) {

@@ -10,7 +10,7 @@
 #define INLINE static inline
 #endif
 
-#include "memory.h"
+#include "../../memory.h"
 #include "../../osd_cpu.h"
 
 enum {

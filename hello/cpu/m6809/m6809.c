@@ -562,7 +562,7 @@ void m6809_set_irq_line(int irqline, int state)
 	{
 		if (m6809.nmi_state == state) return;
 		m6809.nmi_state = state;
-		LOG(("M6809#%d set_irq_line (NMI) %d\n", cpu_getactivecpu(), state));
+		LOG(("M6809 set_irq_line (NMI) %d\n", state));
 		if( state == CLEAR_LINE ) return;
 
 		/* if the stack was not yet initialized */
@@ -594,7 +594,7 @@ void m6809_set_irq_line(int irqline, int state)
 	}
 	else if (irqline < 2)
 	{
-	    LOG(("M6809#%d set_irq_line %d, %d\n", cpu_getactivecpu(), irqline, state));
+	    LOG(("M6809 set_irq_line %d, %d\n", irqline, state));
 		m6809.irq_state[irqline] = state;
 		if (state == CLEAR_LINE) return;
 		CHECK_IRQ_LINES;

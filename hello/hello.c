@@ -2,9 +2,13 @@
 #include <stdint.h>
 #include "cpu/m6809/m6809.h"
 #include "memory.h"
+#include <time.h>
 
 int main() {
-    setvbuf(stdout, NULL, _IONBF, 0);
+    int cycles = 0;
+    float elapsed_time = 0.0f;
+
+    //setvbuf(stdout, NULL, _IONBF, 0);
     printf("Hello, world!\n");
 
     memory_load_rom_from_file("../IJONE_L7.ROM");
@@ -12,10 +16,23 @@ int main() {
 
     m6809_reset(NULL);
     
-    printf("info: %s\n", m6809_info(NULL, 129));
+    while(1)
+    {
+        clock_t start_time = clock();
+        cycles += m6809_execute(2048);
+        clock_t end_time = clock();
+
+        //m6809_set_irq_line(0, 1);
+
+        elapsed_time += ((double)(end_time - start_time)) / CLOCKS_PER_SEC;
+        if(elapsed_time > 1.0f)
+        {
+            break;
+        }
+    }
     
-    m6809_execute(10);
-    m6809_execute(5000);
+    printf("executed %d cycles in %fs\n", cycles, elapsed_time);
+    printf("Speed: %fMHz\n", (float)(cycles / elapsed_time) / 1000000.0f);
 
     return 0;
 }
